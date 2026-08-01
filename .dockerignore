@@ -1,0 +1,7 @@
+target/
+data/
+.git/
+.gitignore
+.idea/
+*.class
+README.md
