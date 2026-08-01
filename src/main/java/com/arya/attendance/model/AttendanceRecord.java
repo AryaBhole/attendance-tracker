@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "attendance_records", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"course_code", "date", "slot_id"})
+        @UniqueConstraint(columnNames = {"course_code", "attendance_date", "slot_id"})
 })
 public class AttendanceRecord {
 
@@ -21,6 +21,7 @@ public class AttendanceRecord {
     @JoinColumn(name = "slot_id")
     private TimetableSlot slot;
 
+    @Column(name = "attendance_date")
     private LocalDate date;
 
     @Enumerated(EnumType.STRING)
