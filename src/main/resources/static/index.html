@@ -137,11 +137,21 @@ function renderCard(slot) {
 }
 
 async function mark(slotId, status) {
-  await fetch('/attendance/mark', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ slotId, date: dateInput.value, status })
-  });
+  try {
+    const res = await fetch('/attendance/mark', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slotId, date: dateInput.value, status })
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      alert(`Failed to mark attendance (status ${res.status}): ${text}`);
+      return;
+    }
+  } catch (e) {
+    alert('Could not reach server: ' + e.message);
+    return;
+  }
   loadDay();
   loadPercentages();
 }
