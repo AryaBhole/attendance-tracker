@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Attendance Tracker</title>
+    <style>
+        body { font-family: -apple-system, Segoe UI, Roboto, sans-serif; max-width: 360px; margin: 60px auto; padding: 0 16px; color: #1a1a1a; }
+        h1 { font-size: 20px; text-align: center; }
+        input { width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; margin-top: 16px; border-radius: 6px; border: none; background: #2563eb; color: white; font-weight: 600; cursor: pointer; font-size: 15px; }
+        .toggle { text-align: center; margin-top: 14px; font-size: 13px; color: #2563eb; cursor: pointer; text-decoration: underline; }
+        .error { color: #b23b3b; font-size: 13px; margin-top: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<h1 id="formTitle">Login</h1>
+<input type="text" id="rollNumber" placeholder="Roll number">
+<input type="password" id="password" placeholder="Password">
+<button id="submitBtn" onclick="submitForm()">Login</button>
+<div class="toggle" id="toggleLink" onclick="toggleMode()">Don't have an account? Register</div>
+<div class="error" id="errorMsg"></div>
+
+<script>
+    let isRegister = false;
+
+    function toggleMode() {
+        isRegister = !isRegister;
+        document.getElementById('formTitle').textContent = isRegister ? 'Register' : 'Login';
+        document.getElementById('submitBtn').textContent = isRegister ? 'Register' : 'Login';
+        document.getElementById('toggleLink').textContent = isRegister ? 'Already have an account? Login' : "Don't have an account? Register";
+        document.getElementById('errorMsg').textContent = '';
+    }
+
+    async function submitForm() {
+        const rollNumber = document.getElementById('rollNumber').value.trim();
+        const password = document.getElementById('password').value;
+        const errorMsg = document.getElementById('errorMsg');
+        errorMsg.textContent = '';
+
+        if (!rollNumber || !password) {
+            errorMsg.textContent = 'Fill in both fields.';
+            return;
+        }
+
+        const endpoint = isRegister ? '/auth/register' : '/auth/login';
+        try {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ rollNumber, password })
+            });
+            if (res.ok) {
+                window.location.href = '/';
+            } else {
+                const data = await res.json();
+                errorMsg.textContent = data.error || 'Something went wrong.';
+            }
+        } catch (e) {
+            errorMsg.textContent = 'Could not reach server.';
+        }
+    }
+</script>
+</body>
+</html>

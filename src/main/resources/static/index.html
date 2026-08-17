@@ -62,7 +62,9 @@
 <body>
 
 <h1>Attendance Tracker</h1>
-<div class="subtitle">III B.Tech Biotechnology</div>
+<div class="subtitle">III B.Tech Biotechnology
+  <span style="float:right; cursor:pointer; text-decoration:underline; font-size:12px;" onclick="logout()">Logout</span>
+</div>
 
 <div class="date-row">
   <button class="nav" id="prevDay">←</button>
@@ -160,8 +162,27 @@ async function loadPercentages() {
   }
 }
 
-loadDay();
-loadPercentages();
+async function checkAuth() {
+  const res = await fetch('/auth/me');
+  if (!res.ok) {
+    window.location.href = '/login.html';
+    return false;
+  }
+  return true;
+}
+
+async function logout() {
+  await fetch('/auth/logout', { method: 'POST' });
+  window.location.href = '/login.html';
+}
+
+(async () => {
+  const ok = await checkAuth();
+  if (ok) {
+    loadDay();
+    loadPercentages();
+  }
+})();
 </script>
 </body>
 </html>
