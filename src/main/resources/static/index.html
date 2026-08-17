@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Attendance Tracker</title>
 <style>
   * { box-sizing: border-box; }
@@ -12,11 +13,16 @@
     padding: 24px 16px 60px;
     background: #f6f7f9;
     color: #1a1a1a;
+    @media (max-width: 400px) {
+      h1 { font-size: 19px; }
+      .date-row { flex-wrap: wrap; }
+      input[type=date] { flex: 1; min-width: 0; }
+    }
   }
   h1 { font-size: 22px; margin-bottom: 4px; }
   .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
   .date-row { display: flex; gap: 8px; align-items: center; margin-bottom: 20px; }
-  input[type=date] { padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+  input[type=date] { padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
   button.nav { padding: 8px 12px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; }
   .card {
     background: #fff;

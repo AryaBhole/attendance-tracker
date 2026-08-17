@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "attendance_records", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"course_code", "attendance_date", "slot_id"})
+        @UniqueConstraint(columnNames = {"course_code", "attendance_date", "slot_id", "user_id"})
 })
 public class AttendanceRecord {
 
@@ -16,6 +16,10 @@ public class AttendanceRecord {
     @ManyToOne
     @JoinColumn(name = "course_code")
     private Course course;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "slot_id")
@@ -29,11 +33,12 @@ public class AttendanceRecord {
 
     public AttendanceRecord() {}
 
-    public AttendanceRecord(Course course, TimetableSlot slot, LocalDate date, AttendanceStatus status) {
+    public AttendanceRecord(Course course, TimetableSlot slot, LocalDate date, AttendanceStatus status, User user) {
         this.course = course;
         this.slot = slot;
         this.date = date;
         this.status = status;
+        this.user = user;
     }
 
     public Long getId() { return id; }
@@ -49,4 +54,7 @@ public class AttendanceRecord {
 
     public AttendanceStatus getStatus() { return status; }
     public void setStatus(AttendanceStatus status) { this.status = status; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }
